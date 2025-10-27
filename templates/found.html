@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Report Found Item</title>
+
+  <!-- External CSS from static folder -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: #cfeeff;
+      font-family: Arial, sans-serif;
+    }
+
+    .container {
+      background: white;
+      padding: 30px 50px;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.2);
+      text-align: center;
+      max-width: 400px;
+      width: 100%;
+    }
+
+    input, button {
+      margin: 8px 0;
+      padding: 8px;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    button {
+      cursor: pointer;
+      background-color: #2196f3;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background-color: #1976d2;
+    }
+
+    a {
+      color: #2196f3;
+      text-decoration: none;
+    }
+
+    video, canvas {
+      margin-top: 10px;
+      border-radius: 8px;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <form method="post" enctype="multipart/form-data" class="fform">
+      <h2>Report Found Item</h2>
+
+      <input name="name" placeholder="Item Name" required>
+      <input name="description" placeholder="Description">
+      <input name="location" placeholder="Location" required>
+      <input name="contact" placeholder="Your Contact (Email or Phone)" required>
+
+      <label for="image">Upload or Capture Image:</label>
+      <!-- ✅ Updated input: allows Camera / Gallery / Files -->
+      <input type="file" id="image" name="image" accept="image/*">
+
+      <!-- Optional live camera preview -->
+      <video id="camera" width="300" height="200" autoplay></video>
+      <canvas id="snapshot" width="300" height="200"></canvas>
+
+      <button type="button" id="startCamera">📷 Open Live Camera</button>
+      <button type="button" id="takePhoto" style="display:none;">Capture Photo</button>
+
+      <button type="submit">Submit</button>
+
+      <p><a href="{{ url_for('dashboard') }}">← Back to Dashboard</a></p>
+      <p><a href="{{ url_for('index') }}">Home</a></p>
+    </form>
+  </div>
+
+  <script>
+    const video = document.getElementById('camera');
+    const canvas = document.getElementById('snapshot');
+    const startBtn = document.getElementById('startCamera');
+    const captureBtn = document.getElementById('takePhoto');
+    const fileInput = document.getElementById('image');
+
+    // 🎥 Start live camera stream
+    startBtn.onclick = async () => {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+        video.srcObject = stream;
+        video.style.display = 'block';
+        captureBtn.style.display = 'inline-block';
+        startBtn.style.display = 'none';
+      } catch (err) {
+        alert('Camera access denied or not available on this device.');
+      }
+    };
+
+    // 📸 Capture snapshot from live video
+    captureBtn.onclick = () => {
+      const context = canvas.getContext('2d');
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+      context.drawImage(video, 0, 0, canvas.width, canvas.height);
+      canvas.style.display = 'block';
+
+      canvas.toBlob((blob) => {
+        const file = new File([blob], "captured_image.jpg", { type: "image/jpeg" });
+        const dataTransfer = new DataTransfer();
+        dataTransfer.items.add(file);
+        fileInput.files = dataTransfer.files;
+      });
+
+      alert("Photo captured successfully!");
+    };
+  </script>
+</body>
+</html>
