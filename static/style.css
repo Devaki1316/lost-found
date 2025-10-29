@@ -2,13 +2,6 @@ body {
   margin:0; font-family: 'Segoe UI', sans-serif;
   background: linear-gradient(120deg,#89f7fe 0%, #66a6ff 100%);
   color:#222;
-  margin: 0;                     /* remove default margin */
-  min-height: 100vh;             /* make body take full height of screen */
-  display: flex; 
-  flex-direction: column;                /* enable flexbox */
-  justify-content: center;       /* center horizontally */
-  align-items: center;           /* center vertically */
-  text-align: center;
 }
 nav { display:flex; justify-content:space-between; padding:12px 20px; background:#0b3d91; color:#fff; }
 nav a { color:#fff; margin-left:10px; text-decoration:none; font-weight:600; }

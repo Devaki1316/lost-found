@@ -1,12 +1,21 @@
 <!DOCTYPE html>
 <html>
-<head><title class="">AI Lost & Found</title>
-  
+<head><title>AI Lost & Found</title>
+  <style>
+    .body{
+      display:flex;
+      justify-content: center;
+      align-items:center;
+      text-align:center;
+      height:100vh;
+    }
+  </style>
 <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
 </head>
 <body>
 <h1><center>AI Lost & Found Portal</center></h1>
-<p><a href="{{ url_for('lost') }}"><center>Report Lost Item</center></a>  </br>
+<p><a href="{{ url_for('lost') }}"><center>Report Lost Item</center></a> | 
    <a href="{{ url_for('found') }}"><center>Report Found Item</center></a></p>
 
 <h2><center>Recent Items</center></h2>
